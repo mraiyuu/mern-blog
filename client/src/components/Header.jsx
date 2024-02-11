@@ -13,6 +13,8 @@ import { FaMoon } from "react-icons/fa";
 
 export default function Header() {
     
+
+  // Active tab
     const path = useLocation().pathname;
 
   return (
