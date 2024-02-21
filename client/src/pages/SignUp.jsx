@@ -14,7 +14,7 @@ export default function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(!formData.username || !formData.email || !formData.password) {
+    if (!formData.username || !formData.email || !formData.password) {
       return setErrorMessage("Please fill out all fields");
     }
 
@@ -25,6 +25,9 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
+      if(data.success === false) {
+        return setErrorMessage(data.message)
+      }
     } catch (error) {}
   };
 
@@ -84,13 +87,11 @@ export default function SignUp() {
               Sign In
             </Link>
           </div>
-          {
-            errorMessage && (
-              <Alert className="mt-5" color='failure'>
+          {errorMessage && (
+            <Alert className="mt-5" color="failure">
               {errorMessage}
-              </Alert>
-            )
-          }
+            </Alert>
+          )}
         </div>
       </div>
     </div>
