@@ -52,7 +52,7 @@ export const signin = async (req, res, next) => {
     // check if password is correct
     const validPassword = bycryptjs.compareSync(password, validUser.password);
     if (!validPassword) {
-      return next(errorHandler(400, "Invalid user"));
+      return next(errorHandler(400, "Invalid password"));
     }
     // save token
     const token = jwt.sign({ id: validUser._id }, process.env.JWT_SECRET);
