@@ -69,6 +69,7 @@ export const signin = async (req, res, next) => {
 };
 
 export const google = async (req, res, next) => {
+  //accept user details from response
   const { name, email, googlePhotoUrl } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -82,6 +83,7 @@ export const google = async (req, res, next) => {
         })
         .json(rest);
     } else {
+      //if user does not exist, profile
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
