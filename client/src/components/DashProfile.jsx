@@ -24,9 +24,9 @@ export default function () {
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
   const [imageFileUploadError, setImageFileUploadError] = useState(null);
   const [formData, setFormData] = useState({});
-  const dispatch = useDispatch();
 
   const filePickerRef = useRef();
+  const dispatch = useDispatch();
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -80,37 +80,38 @@ export default function () {
   };
 
   const handleChange = (e) => {
+    //pass form data 
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (Object.keys(formData).length === 0) {
-  //     return;
-  //   }
-  //   try {
-  //     dispatch(updateStart());
-  //     const res = await fetch(`/api/user/update/${currentUser._id}`, {
-  //       method: "PUT",
-  //       headers: {
-  //         Content_type: "application/json",
-  //       },
-  //       body: JSON.stringify(formData),
-  //     });
-  //     const data = await res.json();
-  //     if (!res.ok) {
-  //       dispatch(updateFailure(data.message));
-  //     } else {
-  //       dispatch(updateSuccess(data));
-  //     }
-  //   } catch (error) {
-  //     dispatch(updateFailure(error.message));
-  //   }
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (Object.keys(formData).length === 0) {
+      return;
+    }
+    try {
+      dispatch(updateStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "PUT",
+        headers: {
+          Content_type: "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(updateFailure(data.message));
+      } else {
+        dispatch(updateSuccess(data));
+      }
+    } catch (error) {
+      dispatch(updateFailure(error.message));
+    }
+  };
 
   return (
     <div className="max-w-lg mx-auto w-full p-3">
       <h1 className="text-center my-7 font-semibold text-3xl">Profile</h1>
-      <form  className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="file"
           accept="image/*"
