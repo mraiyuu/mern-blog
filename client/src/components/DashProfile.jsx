@@ -93,7 +93,7 @@ export default function () {
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "PUT",
         headers: {
-          Content_type: "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
