@@ -18,11 +18,12 @@ import {
   deleteUserStart,
   deleteUserSucess,
   deleteUserFailure,
+  signOutSuccess,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 
 export default function () {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, error } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadProgress, setImageFileUploadProgress] = useState(null);
@@ -145,6 +146,21 @@ export default function () {
       dispatch(deleteUserFailure(error.message));
     }
   };
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch("api/user/signout", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(error.message);
+      } else {
+        dispatch(signOutSuccess())
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className="max-w-lg mx-auto w-full p-3">
@@ -221,7 +237,9 @@ export default function () {
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
           Delete Account
         </span>
-        <span className="cursor-pointer">Sign Out</span>
+        <span onClick={handleSignOut} className="cursor-pointer">
+          Sign Out
+        </span>
       </div>
       {updateUserSucess && (
         <Alert color="success" className="mt-5">
@@ -231,6 +249,11 @@ export default function () {
       {updateUserError && (
         <Alert color="failure" className="mt-5">
           {updateUserError}
+        </Alert>
+      )}
+      {error && (
+        <Alert color="success" className="mt-5">
+          {updateUserSucess}
         </Alert>
       )}
       <Modal
