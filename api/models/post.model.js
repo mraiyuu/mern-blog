@@ -33,7 +33,7 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }//update time
 );
 
-
+//model
 const Post = mongoose.model('Post', postSchema);
 
 export default Post;
