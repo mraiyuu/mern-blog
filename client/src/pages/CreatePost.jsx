@@ -11,7 +11,7 @@ import {
   ref,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function CreatePost() {
   const [file, setFile] = useState(null);
@@ -36,6 +36,7 @@ export default function CreatePost() {
         "state_changed",
         (snapshot) => {
           const progress =
+          //upload progress
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           setImageUploadProgress(progress.toFixed(0));
         },
@@ -44,6 +45,7 @@ export default function CreatePost() {
           setImageUploadProgress(null);
         },
         () => {
+          //get download url 
           getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
             setImageUploadProgress(null);
             setImageUploadError(null);
@@ -60,6 +62,7 @@ export default function CreatePost() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      //create post api 
       const res = await fetch("/api/post/create", {
         method: "POST",
         headers: {
@@ -73,7 +76,7 @@ export default function CreatePost() {
       }
       if (res.ok) {
         setPublishError(null);
-        navigate(`/post/${data.slug}`)
+        navigate(`/post/${data.slug}`);
       }
     } catch (error) {
       setPublishError("Something went wrong");
@@ -152,7 +155,11 @@ export default function CreatePost() {
         <Button type="submit" gradientDuoTone="purpleToPink">
           Publish
         </Button>
-        {publishError && <Alert color="failure" className="mt-5">{publishError}</Alert>}
+        {publishError && (
+          <Alert color="failure" className="mt-5">
+            {publishError}
+          </Alert>
+        )}
       </form>
     </div>
   );
